@@ -61,6 +61,9 @@ public class TankDriveTest extends LinearOpMode {
     private DcMotor leftBack = null;
     private DcMotor rightFront = null;
     private DcMotor rightBack = null;
+    private DcMotor liftMotor = null;
+
+
 
     @Override
     public void runOpMode() {
@@ -75,6 +78,8 @@ public class TankDriveTest extends LinearOpMode {
         rightFront = hardwareMap.get(DcMotor.class, "right_front"); // 2
         rightBack = hardwareMap.get(DcMotor.class, "right_back"); // 3
 
+        liftMotor = hardwareMap.get(DcMotor.class, "lift_motor"); // 4
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -108,6 +113,14 @@ public class TankDriveTest extends LinearOpMode {
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
             leftPower  = -gamepad1.left_stick_y ;
             rightPower = -gamepad1.right_stick_y ;
+
+            if (gamepad1.a) {
+                liftMotor.setPower(1.0);
+            } else if (gamepad1.b) {
+                liftMotor.setPower(-1.0);
+            } else {
+                liftMotor.setPower(0.0);
+            }
 
             // Send calculated power to wheels
             leftFront.setPower(leftPower);
