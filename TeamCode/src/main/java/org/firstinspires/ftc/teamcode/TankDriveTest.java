@@ -55,7 +55,7 @@ import com.qualcomm.robotcore.util.Range;
 //@Disabled
 public class TankDriveTest extends LinearOpMode {
 
-    // Declare OpMode members.
+    // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor leftBack = null;
