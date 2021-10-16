@@ -104,8 +104,8 @@ public class TankDriveTest extends LinearOpMode {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            //double drive = -gamepad1.left_stick_y;
-            //double turn  =  gamepad1.right_stick_x;
+            double drive = -gamepad1.left_stick_y;
+            double turn  =  gamepad1.right_stick_x;
             //leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             //rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
@@ -114,9 +114,9 @@ public class TankDriveTest extends LinearOpMode {
             leftPower  = -gamepad1.left_stick_y ;
             rightPower = -gamepad1.right_stick_y ;
 
-            if (gamepad1.a) {
+            if (gamepad1.dpad_up) {
                 liftMotor.setPower(1.0);
-            } else if (gamepad1.b) {
+            } else if (gamepad1.dpad_down) {
                 liftMotor.setPower(-1.0);
             } else {
                 liftMotor.setPower(0.0);
