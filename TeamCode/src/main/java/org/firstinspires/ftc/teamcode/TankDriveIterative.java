@@ -32,6 +32,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -50,6 +52,10 @@ public class TankDriveIterative extends OpMode
     // Declaring lift motor
     private DcMotor liftMotor = null;
 
+    // Declaring servo
+    private Servo wristL = null;
+    private Servo wristR = null;
+
 
     @Override
     public void init() {
@@ -57,10 +63,10 @@ public class TankDriveIterative extends OpMode
         telemetry.addData("Status", "Initializing");
 
         // Initializing wheel motors variable
-        leftFront  = hardwareMap.get(DcMotor.class, "left_front");
-        leftBack = hardwareMap.get(DcMotor.class, "left_back");
-        rightFront = hardwareMap.get(DcMotor.class, "right_front");
-        rightBack = hardwareMap.get(DcMotor.class, "right_back");
+        leftFront  = hardwareMap.get(DcMotor.class, "left_front"); // 0
+        leftBack = hardwareMap.get(DcMotor.class, "left_back"); // 1
+        rightFront = hardwareMap.get(DcMotor.class, "right_front"); // 2
+        rightBack = hardwareMap.get(DcMotor.class, "right_back"); // 3
 
         // Configuring directions of the motors
         leftFront.setDirection(DcMotor.Direction.FORWARD);
@@ -69,17 +75,23 @@ public class TankDriveIterative extends OpMode
         rightBack.setDirection(DcMotor.Direction.REVERSE);
 
         // Initializing lift motor and configuring brake behavior
-        liftMotor = hardwareMap.get(DcMotor.class, "lift_motor");
+        liftMotor = hardwareMap.get(DcMotor.class, "lift_motor"); // 4
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // Initializing lift motor and configuring brake behavior
+        wristL = hardwareMap.get(Servo.class, "wristL"); // 5
+        wristR = hardwareMap.get(Servo.class, "wristR"); // 6
 
         // Ready message
         telemetry.addData("Status", "Initialized");
     }
 
+
     @Override
     public void init_loop() {
 
     }
+
 
     @Override
     public void loop() {
@@ -97,9 +109,30 @@ public class TankDriveIterative extends OpMode
         rightFront.setPower(rightPower);
         rightBack.setPower(rightPower);
 
+        // Up and down control for lift motor
+        if (gamepad1.dpad_up) {
+            liftMotor.setPower(1.0);
+        } else if (gamepad1.dpad_down) {
+            liftMotor.setPower(-1.0);
+        } else {
+            liftMotor.setPower(0.0);
+        }
+
+        // Open and close wrist (servo)
+        if (gamepad1.a) {
+            wristL.setPosition(0);
+            wristR.setPosition(1);
+        }
+        if (gamepad1.b) {
+            wristL.setPosition(1);
+            wristR.setPosition(0);
+        }
+
+        // Update status
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", leftPower, rightPower);
     }
+
 
     @Override
     public void stop() {
