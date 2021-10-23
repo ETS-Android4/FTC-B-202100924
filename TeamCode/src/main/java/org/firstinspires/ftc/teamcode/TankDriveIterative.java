@@ -146,7 +146,7 @@ public class TankDriveIterative extends OpMode
         // Update status
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", ((leftPower * 100) + '%'), ((rightPower * 100) + '%'));
-        //telemetry.addData("Servos", "Left: (%.2f), Right: (%.2f)", wristL.getDirection(), wristR.getDirection());
+        telemetry.addData("Servos", "Left: (%.2f), Right: (%.2f)", wristL.getDirection(), wristR.getDirection());
     }
 
 
