@@ -56,6 +56,9 @@ public class TankDriveIterative extends OpMode
     private Servo wristL = null;
     private Servo wristR = null;
 
+    // Declaring spinner motor
+    private DcMotor spinnerMotor = null;
+
 
     @Override
     public void init() {
@@ -78,9 +81,13 @@ public class TankDriveIterative extends OpMode
         liftMotor = hardwareMap.get(DcMotor.class, "lift_motor"); // 4
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        // Initializing lift motor and configuring brake behavior
+        // Initializing spinner motor
         wristL = hardwareMap.get(Servo.class, "wristL"); // 5
         wristR = hardwareMap.get(Servo.class, "wristR"); // 6
+
+        // Initializing spinner motor and configuring direction
+        spinnerMotor = hardwareMap.get(DcMotor.class, "spinner_motor"); //7
+        spinnerMotor.setDirection(DcMotor.Direction.FORWARD);
 
         // Ready message
         telemetry.addData("Status", "Initialized");
@@ -119,18 +126,27 @@ public class TankDriveIterative extends OpMode
         }
 
         // Open and close wrist (servo)
+
         if (gamepad1.a) {
-            wristL.setPosition(0);
-            wristR.setPosition(1);
+            wristL.setPosition(0.0);
+            wristR.setPosition(1.0);
         }
-        if (gamepad1.b) {
-            wristL.setPosition(1);
-            wristR.setPosition(0);
+        else if (gamepad1.b) {
+            wristL.setPosition(1.0);
+            wristR.setPosition(0.0);
+        }
+
+        // Spin spinner motor
+        if (gamepad1.y) {
+            spinnerMotor.setPower(0.5);
+        } else {
+            spinnerMotor.setPower(0.0);
         }
 
         // Update status
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", leftPower, rightPower);
+        telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", ((leftPower * 100) + '%'), ((rightPower * 100) + '%'));
+        //telemetry.addData("Servos", "Left: (%.2f), Right: (%.2f)", wristL.getDirection(), wristR.getDirection());
     }
 
 
