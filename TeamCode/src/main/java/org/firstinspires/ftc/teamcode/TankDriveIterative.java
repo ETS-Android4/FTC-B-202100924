@@ -129,10 +129,10 @@ public class TankDriveIterative extends OpMode
 
         if (gamepad1.a) {
             wristL.setPosition(0.0);
-            wristR.setPosition(1.0);
+            wristR.setPosition(0.5);
         }
         else if (gamepad1.b) {
-            wristL.setPosition(1.0);
+            wristL.setPosition(0.5);
             wristR.setPosition(0.0);
         }
 
