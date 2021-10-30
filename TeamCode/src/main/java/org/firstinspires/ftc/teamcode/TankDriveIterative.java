@@ -118,13 +118,13 @@ public class TankDriveIterative extends OpMode
         if (G1_rightBumper) {
             leftFront.setPower(-1);
             leftBack.setPower(1);
-            rightFront.setPower(-1);
-            rightBack.setPower(1);
+            rightFront.setPower(1);
+            rightBack.setPower(-1);
         } else if (G1_leftBumper) {
             leftFront.setPower(1);
             leftBack.setPower(-1);
-            rightFront.setPower(1);
-            rightBack.setPower(-1);
+            rightFront.setPower(-1);
+            rightBack.setPower(1);
         } else {
             leftFront.setPower(leftPower);
             leftBack.setPower(leftPower);
