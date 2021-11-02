@@ -65,7 +65,7 @@ public class TankDriveIterative extends OpMode
     public void init() {
         // Initializing message
         telemetry.addData("Status", "Initializing");
-
+        
         // Initializing wheel motors variable
         leftFront  = hardwareMap.get(DcMotor.class, "left_front"); // control
         leftBack = hardwareMap.get(DcMotor.class, "left_back"); // extension
@@ -77,20 +77,23 @@ public class TankDriveIterative extends OpMode
         leftBack.setDirection(DcMotor.Direction.FORWARD);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
-
+        
         // Initializing lift motor and configuring brake behavior
         liftMotor = hardwareMap.get(DcMotor.class, "lift_motor"); // extension
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+        liftMotor.setPower(1.0);
+        liftMotor.setTargetPosition(0);
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        
         // Initializing spinner motor
         wristL = hardwareMap.get(Servo.class, "wristL"); // control
         wristR = hardwareMap.get(Servo.class, "wristR"); // control
-
+        
         // Initializing spinner motor and configuring direction
         spinnerMotor = hardwareMap.get(DcMotor.class, "spinner_motor"); // extension
         spinnerMotor.setDirection(DcMotor.Direction.FORWARD);
-
+        
         // Ready message
         telemetry.addData("Status", "Initialized");
     }
@@ -104,6 +107,7 @@ public class TankDriveIterative extends OpMode
 
     @Override
     public void loop() {
+        
         // Declaring power level of wheel motors
         double leftPower;
         double rightPower;
@@ -131,15 +135,29 @@ public class TankDriveIterative extends OpMode
             rightFront.setPower(rightPower);
             rightBack.setPower(rightPower);
         }
-
+        
         // Up and down control for lift motor
-
+        
         if (gamepad2.dpad_up) {
             liftMotor.setPower(1.0);
         } else if (gamepad2.dpad_down) {
             liftMotor.setPower(-1.0);
         } else {
             liftMotor.setPower(0.0);
+        }
+        
+
+        if (!liftMotor.isBusy()) {
+            if (gamepad2.dpad_up) {
+                liftMotor.setPower(1.0);
+                liftMotor.setTargetPosition(5450);
+                liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+            if (gamepad2.dpad_down) {
+                liftMotor.setPower(1.0);
+                liftMotor.setTargetPosition(0);
+                liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
         }
 
 
@@ -152,7 +170,7 @@ public class TankDriveIterative extends OpMode
             wristL.setPosition(0.5);
             wristR.setPosition(0.0);
         }
-
+        
         // Spin spinner motor
         if (gamepad2.y) {
             spinnerMotor.setPower(0.2);
@@ -163,7 +181,9 @@ public class TankDriveIterative extends OpMode
         // Update status
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", ((leftPower * 100) + '%'), ((rightPower * 100) + '%'));
+        
         telemetry.addData("Lift's Position", "Pos. Value: " + liftMotor.getCurrentPosition());
+
         //telemetry.addData("Servos", "Left: (%.2f), Right: (%.2f)", wristL.getDirection(), wristR.getDirection());
     }
 
