@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp(name="QWQ", group="Iterative Opmode")
+@TeleOp(name="uwu", group="Iterative Opmode")
 public class TankDriveIterative extends OpMode
 {
     // Elapsed time
@@ -59,6 +59,11 @@ public class TankDriveIterative extends OpMode
 
     // Declaring spinner motor
     private DcMotor spinnerMotor = null;
+    
+    // Other variable
+    /* Have not test out
+    private Boolean halfSpeed = True;
+    */
 
 
 
