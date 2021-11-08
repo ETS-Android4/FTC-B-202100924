@@ -215,8 +215,8 @@ public class TeleOpTest extends OpMode
 
         // Update status
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", leftPower, rightPower);
-        telemetry.addData("Spinner Power Level", "Power Value: " + spinnerPower);
+        telemetry.addData("Motors' Status", "Left: (%.2f), Right: (%.2f)", leftPower, rightPower);
+        telemetry.addData("Spinner Status", "Power Value: " + spinnerPower);
 
         if (liftMotor.isBusy()) {
             telemetry.addData("Lift Status", "Status: Busy, Pos. Value: " + liftMotor.getCurrentPosition());
