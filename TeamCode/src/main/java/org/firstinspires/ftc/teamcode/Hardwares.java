@@ -58,10 +58,12 @@ public class Hardwares
     public DcMotor rightFront = null;
     public DcMotor rightBack = null;
     public DcMotor spinnerMotor = null;
+    public Servo wristL = null;
+    public Servo wristR = null;
 
     /* local OpMode members. */
-    HardwareMap hwMap           =  null;
-    private ElapsedTime period  = new ElapsedTime();
+    HardwareMap hwMap = null;
+    private ElapsedTime period = new ElapsedTime();
 
     /* Constructor */
     public Hardwares(){
@@ -92,6 +94,8 @@ public class Hardwares
         rightFront.setPower(0);
         rightBack.setPower(0);
         spinnerMotor.setPower(0);
+
+        wristL = hwMap.get(Servo.class, "wristL");
     }
  }
 

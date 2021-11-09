@@ -65,20 +65,20 @@ public class TeleOpTest extends OpMode
     private double spinnerPower = 0.0;
     private double powerMultiplier = 0.75;
 
-    private final int initializingID = hardwareMap.appContext.getResources().getIdentifier("initializing", "raw", hardwareMap.appContext.getPackageName());
-    private final int onehalfID = hardwareMap.appContext.getResources().getIdentifier("onehalf", "raw", hardwareMap.appContext.getPackageName());
-    private final int oneID = hardwareMap.appContext.getResources().getIdentifier("one", "raw", hardwareMap.appContext.getPackageName());
-    private final int halfID = hardwareMap.appContext.getResources().getIdentifier("half", "raw", hardwareMap.appContext.getPackageName());
-    private final int zeroID = hardwareMap.appContext.getResources().getIdentifier("zero", "raw", hardwareMap.appContext.getPackageName());
-    private int soundPhase = 0;
-    private double timePhase = 30.0;
+    //private final int initializingID = hardwareMap.appContext.getResources().getIdentifier("initializing", "raw", hardwareMap.appContext.getPackageName());
+    //private final int onehalfID = hardwareMap.appContext.getResources().getIdentifier("onehalf", "raw", hardwareMap.appContext.getPackageName());
+    //private final int oneID = hardwareMap.appContext.getResources().getIdentifier("one", "raw", hardwareMap.appContext.getPackageName());
+    //private final int halfID = hardwareMap.appContext.getResources().getIdentifier("half", "raw", hardwareMap.appContext.getPackageName());
+    //private final int zeroID = hardwareMap.appContext.getResources().getIdentifier("zero", "raw", hardwareMap.appContext.getPackageName());
+    //private int soundPhase = 0;
+    //private double timePhase = 30.0;
 
 
     @Override
     public void init() {
         // Initializing message
         telemetry.addData("Status", "Initializing");
-        SoundPlayer.getInstance().startPlaying(hardwareMap.appContext, initializingID);
+        //SoundPlayer.getInstance().startPlaying(hardwareMap.appContext, initializingID);
 
         // Initializing wheel motors variable
         leftFront  = hardwareMap.get(DcMotor.class, "left_front");
@@ -135,6 +135,7 @@ public class TeleOpTest extends OpMode
             spinnerPower = 0.0;
         }
 
+        /*
         // Logics for time remainder
         if (runtime.seconds() > timePhase) {
             if (soundPhase == 0) {
@@ -154,7 +155,7 @@ public class TeleOpTest extends OpMode
                 soundPhase += 1;
                 SoundPlayer.getInstance().startPlaying(hardwareMap.appContext, zeroID);
             }
-        }
+        }*/
 
     }
 

@@ -29,11 +29,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -64,8 +64,6 @@ public class TankDriveIterative extends OpMode
     /* Have not test out
     private Boolean halfSpeed = True;
     */
-
-
 
     @Override
     public void init() {
@@ -119,8 +117,8 @@ public class TankDriveIterative extends OpMode
         double rightPower;
 
         // Reading joystick y-coordinate for power level
-        leftPower  = -gamepad1.left_stick_y/2;
-        rightPower = -gamepad1.right_stick_y/2;
+        leftPower  = -gamepad1.left_stick_y * 0.5;
+        rightPower = -gamepad1.right_stick_y * 0.5;
 
         // Send power level to wheel motors
         if (gamepad1.left_bumper) {

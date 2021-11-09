@@ -71,7 +71,7 @@ public class Auto extends LinearOpMode {
         robot.rightFront.setPower(-FORWARD_SPEED);
         robot.rightBack.setPower(-FORWARD_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
+        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
             telemetry.addData("Going back to spin", "%2.5f S Elapsed", runtime.seconds());
             telemetry.update();
         }
@@ -83,7 +83,7 @@ public class Auto extends LinearOpMode {
 
         robot.spinnerMotor.setPower(0.3);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
+        while (opModeIsActive() && (runtime.seconds() < 1.0)) {
             telemetry.addData("Spinning", "%2.5f S Elapsed", runtime.seconds());
             telemetry.update();
         }
@@ -95,7 +95,7 @@ public class Auto extends LinearOpMode {
         robot.rightFront.setPower(FORWARD_SPEED);
         robot.rightBack.setPower(FORWARD_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 6.0)) {
+        while (opModeIsActive() && (runtime.seconds() < 2.0)) {
             telemetry.addData("Moving to park", "%2.5f S Elapsed", runtime.seconds());
             telemetry.update();
         }
