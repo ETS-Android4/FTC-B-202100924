@@ -34,22 +34,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-/**
- * This is NOT an opmode.
- *
- * This class can be used to define all the specific hardware for a single robot.
- * In this case that robot is a Pushbot.
- * See PushbotTeleopTank_Iterative and others classes starting with "Pushbot" for usage examples.
- *
- * This hardware class assumes the following device names have been configured on the robot:
- * Note:  All names are lower case and some have single spaces between words.
- *
- * Motor channel:  Left  drive motor:        "left_drive"
- * Motor channel:  Right drive motor:        "right_drive"
- * Motor channel:  Manipulator drive motor:  "left_arm"
- * Servo channel:  Servo to open left claw:  "left_hand"
- * Servo channel:  Servo to open right claw: "right_hand"
- */
+
 public class Hardwares
 {
     /* Public OpMode members. */
@@ -58,10 +43,13 @@ public class Hardwares
     public DcMotor rightFront = null;
     public DcMotor rightBack = null;
     public DcMotor spinnerMotor = null;
+    public Servo wristL = null;
+    public Servo wristR = null;
+    public DcMotor liftMotor = null;
 
     /* local OpMode members. */
-    HardwareMap hwMap           =  null;
-    private ElapsedTime period  = new ElapsedTime();
+    HardwareMap hwMap = null;
+    private ElapsedTime period = new ElapsedTime();
 
     /* Constructor */
     public Hardwares(){
@@ -73,18 +61,31 @@ public class Hardwares
         // Save reference to Hardware map
         hwMap = ahwMap;
 
-        // Define and Initialize Motors
+        // Define and initialize motors
         leftFront = hwMap.get(DcMotor.class, "left_front");
         leftBack = hwMap.get(DcMotor.class, "left_back");
         rightFront = hwMap.get(DcMotor.class, "right_front");
         rightBack = hwMap.get(DcMotor.class, "right_back");
         spinnerMotor = hwMap.get(DcMotor.class, "spinner_motor");
+        liftMotor = hwMap.get(DcMotor.class, "lift_motor");
 
+        // Set direction
         leftFront.setDirection(DcMotor.Direction.FORWARD);
         leftBack.setDirection(DcMotor.Direction.FORWARD);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
         spinnerMotor.setDirection(DcMotor.Direction.REVERSE);
+
+        // Set behavior
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // Set runmode
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Set all motors to zero power
         leftFront.setPower(0);
@@ -92,6 +93,9 @@ public class Hardwares
         rightFront.setPower(0);
         rightBack.setPower(0);
         spinnerMotor.setPower(0);
-    }
- }
 
+        // Define and initialize servo
+        wristL = hwMap.get(Servo.class, "wristL");
+        wristR = hwMap.get(Servo.class, "wristR");
+    }
+}
