@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
@@ -41,11 +42,18 @@ public class Auto extends LinearOpMode {
 
     /* Declare OpMode members. */
     Hardwares robot   = new Hardwares();
-    private ElapsedTime     runtime = new ElapsedTime();
+    private ElapsedTime runtime = new ElapsedTime();
 
 
     static final double     FORWARD_SPEED = 0.6;
     static final double     TURN_SPEED    = 0.5;
+
+    private void movement(double frontL, double backL, double frontR, double backR) {
+        robot.leftFront.setPower(frontL);
+        robot.leftBack.setPower(backL);
+        robot.rightFront.setPower(frontR);
+        robot.rightBack.setPower(backR);
+    }
 
     @Override
     public void runOpMode() {
@@ -63,9 +71,46 @@ public class Auto extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+
+        // 1st
+        movement(1.0, 1.0, 1.0, 1.0);
+        runtime.reset();
+        while (opModeIsActive() && (robot.rightBack.getCurrentPosition() < 100)) {
+            telemetry.addData("Going to deposit", "%2.5f S Elapsed", runtime.seconds());
+            telemetry.addData("Encoder", "Pos. Value: " + robot.rightBack.getCurrentPosition());
+            telemetry.update();
+        }
+        movement(0.0, 0.0, 0.0, 0.0);
+
+
+        // 2nd
+        runtime.reset();
+        robot.liftMotor.setPower(1.0);
+        robot.liftMotor.setTargetPosition(5450);
+        robot.liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (opModeIsActive() && robot.liftMotor.isBusy()) {
+            telemetry.addData("Lifting", "%2.5f S Elapsed", runtime.seconds());
+            telemetry.addData("Lift", "Pos. Value: " + robot.liftMotor.getCurrentPosition());
+            telemetry.update();
+        }
+        robot.liftMotor.setPower(0.0);
+
+
+        // 3rd
+        runtime.reset();
+        robot.wristL.setPosition(0.5);
+        robot.wristR.setPosition(0.0);
+        while (opModeIsActive() && (robot.wristL.getPosition() != 0.5) && (robot.wristR.getPosition() != 0.0)) {
+            telemetry.addData("Releasing", "%2.5f S Elapsed", runtime.seconds());
+            telemetry.addData("Lift Pos. Value: ", "Left: (%.2f) Right: (%.2f)", robot.wristL.getPosition(), robot.wristR.getPosition());
+            telemetry.update();
+        }
+
+
+
+
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
-
-
+        /*
         robot.leftFront.setPower(-FORWARD_SPEED);
         robot.leftBack.setPower(-FORWARD_SPEED);
         robot.rightFront.setPower(-FORWARD_SPEED);
@@ -103,6 +148,7 @@ public class Auto extends LinearOpMode {
         robot.leftBack.setPower(0);
         robot.rightFront.setPower(0);
         robot.rightBack.setPower(0);
+        */
 
 
         telemetry.addData("Path", "Complete");
