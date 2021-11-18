@@ -93,6 +93,7 @@ public class TankDriveIterative extends OpMode
         // Initializing spinner motor
         wristL = hardwareMap.get(Servo.class, "wristL"); // control
         wristR = hardwareMap.get(Servo.class, "wristR"); // control
+        wristL.setDirection(Servo.Direction.REVERSE);
 
         // Initializing spinner motor and configuring direction
         spinnerMotor = hardwareMap.get(DcMotor.class, "spinner_motor"); // extension
@@ -142,7 +143,7 @@ public class TankDriveIterative extends OpMode
         if (!liftMotor.isBusy()) {
             if (gamepad2.dpad_up) {
                 liftMotor.setPower(1.0);
-                liftMotor.setTargetPosition(5450);
+                liftMotor.setTargetPosition(4700);
                 liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
             else if (gamepad2.dpad_down) {
@@ -154,12 +155,12 @@ public class TankDriveIterative extends OpMode
 
         // Open and close wrist (servo)
         if (gamepad2.a) {
-            wristL.setPosition(0.0);
-            wristR.setPosition(0.5);
+            wristL.setPosition(1.0);
+            wristR.setPosition(0.9);
         }
         else if (gamepad2.b) {
-            wristL.setPosition(0.5);
-            wristR.setPosition(0.0);
+            wristL.setPosition(-1.0);
+            wristR.setPosition(-1.0);
         }
 
         // Spin spinner motor
