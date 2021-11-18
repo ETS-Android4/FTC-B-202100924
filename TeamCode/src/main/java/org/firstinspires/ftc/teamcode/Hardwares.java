@@ -85,7 +85,6 @@ public class Hardwares
 
         // Set runmode
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Set all motors to zero power
         leftFront.setPower(0);
@@ -97,5 +96,6 @@ public class Hardwares
         // Define and initialize servo
         wristL = hwMap.get(Servo.class, "wristL");
         wristR = hwMap.get(Servo.class, "wristR");
+        wristL.setDirection(Servo.Direction.REVERSE);
     }
 }

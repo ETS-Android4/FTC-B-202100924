@@ -45,9 +45,6 @@ public class Auto extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
 
-    static final double     FORWARD_SPEED = 0.6;
-    static final double     TURN_SPEED    = 0.5;
-
     private void movement(double frontL, double backL, double frontR, double backR) {
         robot.leftFront.setPower(frontL);
         robot.leftBack.setPower(backL);
@@ -71,11 +68,19 @@ public class Auto extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        // init
+        robot.wristL.setPosition(-1.0);
+        robot.wristR.setPosition(-1.0);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 2)) {
+            telemetry.addData("Going to deposit", "%2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
 
         // 1st
-        movement(1.0, 1.0, 1.0, 1.0);
+        movement(0.4, 0.4, 0.4, 0.4);
         runtime.reset();
-        while (opModeIsActive() && (robot.rightBack.getCurrentPosition() < 100)) {
+        while (opModeIsActive() && (runtime.seconds() < 1)) {
             telemetry.addData("Going to deposit", "%2.5f S Elapsed", runtime.seconds());
             telemetry.addData("Encoder", "Pos. Value: " + robot.rightBack.getCurrentPosition());
             telemetry.update();
@@ -86,7 +91,7 @@ public class Auto extends LinearOpMode {
         // 2nd
         runtime.reset();
         robot.liftMotor.setPower(1.0);
-        robot.liftMotor.setTargetPosition(5450);
+        robot.liftMotor.setTargetPosition(4700);
         robot.liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         while (opModeIsActive() && robot.liftMotor.isBusy()) {
             telemetry.addData("Lifting", "%2.5f S Elapsed", runtime.seconds());
@@ -94,18 +99,8 @@ public class Auto extends LinearOpMode {
             telemetry.update();
         }
         robot.liftMotor.setPower(0.0);
-
-
-        // 3rd
-        runtime.reset();
-        robot.wristL.setPosition(0.5);
-        robot.wristR.setPosition(0.0);
-        while (opModeIsActive() && (robot.wristL.getPosition() != 0.5) && (robot.wristR.getPosition() != 0.0)) {
-            telemetry.addData("Releasing", "%2.5f S Elapsed", runtime.seconds());
-            telemetry.addData("Lift Pos. Value: ", "Left: (%.2f) Right: (%.2f)", robot.wristL.getPosition(), robot.wristR.getPosition());
-            telemetry.update();
-        }
-
+        robot.wristL.setPosition(1.0);
+        robot.wristR.setPosition(0.9);
 
 
 

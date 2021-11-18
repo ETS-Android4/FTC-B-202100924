@@ -60,7 +60,7 @@ public class ResetHardwares extends OpMode
     @Override
     public void init() {
         // Initializing message
-        telemetry.addData("Status", "Resetting hardwares...");
+        telemetry.addData("Status", "Resetting");
 
         // Initializing wheel motors variable
         leftFront  = hardwareMap.get(DcMotor.class, "left_front"); // control
@@ -85,16 +85,11 @@ public class ResetHardwares extends OpMode
         // Initializing spinner motor
         wristL = hardwareMap.get(Servo.class, "wristL"); // control
         wristR = hardwareMap.get(Servo.class, "wristR"); // control
+        wristL.setDirection(Servo.Direction.REVERSE);
 
         // Initializing spinner motor and configuring direction
         spinnerMotor = hardwareMap.get(DcMotor.class, "spinner_motor"); // extension
         spinnerMotor.setDirection(DcMotor.Direction.REVERSE);
-
-        // Reset motor
-        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightBack.setPower(1.0);
-        rightBack.setTargetPosition(0);
-        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Ready message
         telemetry.addData("Status", "Finished resetting");
@@ -109,14 +104,16 @@ public class ResetHardwares extends OpMode
 
     @Override
     public void loop() {
+
         if (gamepad2.a) {
-            wristL.setPosition(0.0);
-            wristR.setPosition(0.5);
+            wristL.setPosition(1.0);
+            wristR.setPosition(0.9);
         }
         else if (gamepad2.b) {
-            wristL.setPosition(0.5);
-            wristR.setPosition(0.0);
+            wristL.setPosition(-1.0);
+            wristR.setPosition(-1.0);
         }
+
     }
 
 
