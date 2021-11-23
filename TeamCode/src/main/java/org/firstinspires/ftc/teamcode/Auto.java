@@ -78,18 +78,8 @@ public class Auto extends LinearOpMode {
         }
 
         // 1st
-        movement(0.4, 0.4, 0.4, 0.4);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1)) {
-            telemetry.addData("Going to deposit", "%2.5f S Elapsed", runtime.seconds());
-            telemetry.addData("Encoder", "Pos. Value: " + robot.rightBack.getCurrentPosition());
-            telemetry.update();
-        }
-        movement(0.0, 0.0, 0.0, 0.0);
-
-
-        // 2nd
-        runtime.reset();
+        robot.spinnerMotor.setPower(0.4);
         robot.liftMotor.setPower(1.0);
         robot.liftMotor.setTargetPosition(4700);
         robot.liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -99,9 +89,67 @@ public class Auto extends LinearOpMode {
             telemetry.update();
         }
         robot.liftMotor.setPower(0.0);
+
+
+        // 2nd
+        movement(0.4, 0.4, 0.4, 0.4);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 1)) {
+            telemetry.addData("Going to deposit", "%2.5f S Elapsed", runtime.seconds());
+            telemetry.addData("Encoder", "Pos. Value: " + robot.rightBack.getCurrentPosition());
+            telemetry.update();
+        }
+        movement(0.0, 0.0, 0.0, 0.0);
+        sleep(100);
         robot.wristL.setPosition(1.0);
         robot.wristR.setPosition(0.9);
 
+
+        // 3rd
+        runtime.reset();
+        movement(-0.4, 0.4, 0.4, -0.4);
+        while (opModeIsActive() && (runtime.seconds() < 2)) {
+            telemetry.addData("Going to the wall", "%2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        movement(0.0, 0.0, 0.0, 0.0);
+
+
+        // 4th
+        runtime.reset();
+        movement(-0.4, 0.4, 0.4, -0.4);
+        while (opModeIsActive() && (runtime.seconds() < 3)) {
+            telemetry.addData("Going to wall", "%2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        movement(0.0, 0.0, 0.0, 0.0);
+
+        // 5th
+        runtime.reset();
+        movement(-0.2, -0.2, -0.2, -0.2);
+        while (opModeIsActive() && (runtime.seconds() < 2)) {
+            telemetry.addData("Going to spin", "%2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        movement(0.0, 0.0, 0.0, 0.0);
+
+
+        // 6th
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 5)) {
+            telemetry.addData("Spinning", "%2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        robot.spinnerMotor.setPower(0.0);
+
+        // 7th
+        runtime.reset();
+        movement(0.25, 0.25, 0.25, 0.25);
+        while (opModeIsActive() && (runtime.seconds() < 1)) {
+            telemetry.addData("Going to park", "%2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        movement(0.0, 0.0, 0.0, 0.0);
 
 
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
