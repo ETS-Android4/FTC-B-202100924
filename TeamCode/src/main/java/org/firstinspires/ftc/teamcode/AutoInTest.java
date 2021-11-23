@@ -34,11 +34,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
-
-@Autonomous(name="uwu auto", group="Auto")
-public class Auto extends LinearOpMode {
+@Autonomous(name="uwu auto beta", group="Auto")
+public class AutoInTest extends LinearOpMode {
 
     /* Declare OpMode members. */
     Hardwares robot   = new Hardwares();
@@ -50,6 +48,13 @@ public class Auto extends LinearOpMode {
         robot.leftBack.setPower(backL);
         robot.rightFront.setPower(frontR);
         robot.rightBack.setPower(backR);
+    }
+
+    private void movement_wait(int time, String name) {
+        while (opModeIsActive() && (runtime.seconds() < time)) {
+            telemetry.addData(name, "%2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
     }
 
     @Override
@@ -72,16 +77,12 @@ public class Auto extends LinearOpMode {
         robot.wristL.setPosition(-1.0);
         robot.wristR.setPosition(-1.0);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 2)) {
-            telemetry.addData("Going to deposit", "%2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
+        movement_wait(1, "Going to center");
 
         // 1st
         runtime.reset();
-        robot.spinnerMotor.setPower(0.3);
         robot.liftMotor.setPower(1.0);
-        robot.liftMotor.setTargetPosition(4700);
+        robot.liftMotor.setTargetPosition(4800);
         robot.liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         while (opModeIsActive() && robot.liftMotor.isBusy()) {
             telemetry.addData("Lifting", "%2.5f S Elapsed", runtime.seconds());
@@ -94,11 +95,7 @@ public class Auto extends LinearOpMode {
         // 2nd
         movement(0.4, 0.4, 0.4, 0.4);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1)) {
-            telemetry.addData("Going to deposit", "%2.5f S Elapsed", runtime.seconds());
-            telemetry.addData("Encoder", "Pos. Value: " + robot.rightBack.getCurrentPosition());
-            telemetry.update();
-        }
+        movement_wait(1, "Going to deposit");
         movement(0.0, 0.0, 0.0, 0.0);
         sleep(100);
         robot.wristL.setPosition(1.0);
@@ -108,47 +105,33 @@ public class Auto extends LinearOpMode {
         // 3rd
         runtime.reset();
         movement(-0.4, 0.4, 0.4, -0.4);
-        while (opModeIsActive() && (runtime.seconds() < 2)) {
-            telemetry.addData("Going to the wall", "%2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
+        movement_wait(2, "Going to the wall");
         movement(0.0, 0.0, 0.0, 0.0);
 
 
         // 4th
         runtime.reset();
         movement(-0.4, 0.4, 0.4, -0.4);
-        while (opModeIsActive() && (runtime.seconds() < 3)) {
-            telemetry.addData("Going to wall", "%2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
+        movement_wait(3, "Going to the wall");
         movement(0.0, 0.0, 0.0, 0.0);
 
         // 5th
         runtime.reset();
         movement(-0.25, -0.25, -0.25, -0.25);
-        while (opModeIsActive() && (runtime.seconds() < 2)) {
-            telemetry.addData("Going to spin", "%2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
+        movement_wait(2, "Going to spin");
         movement(0.0, 0.0, 0.0, 0.0);
 
 
         // 6th
+        robot.spinnerMotor.setPower(0.25);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 3)) {
-            telemetry.addData("Spinning", "%2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
+        movement_wait(5, "Spinning");
         robot.spinnerMotor.setPower(0.0);
 
         // 7th
         runtime.reset();
-        movement(0.29, 0.29, 0.29, 0.29);
-        while (opModeIsActive() && (runtime.seconds() < 1)) {
-            telemetry.addData("Going to park", "%2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
+        movement(0.3, 0.3, 0.3, 0.3);
+        movement_wait(1, "Going to park");
         movement(0.0, 0.0, 0.0, 0.0);
 
 
