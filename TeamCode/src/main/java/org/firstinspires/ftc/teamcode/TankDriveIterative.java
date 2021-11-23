@@ -86,9 +86,6 @@ public class TankDriveIterative extends OpMode
         liftMotor = hardwareMap.get(DcMotor.class, "lift_motor"); // extension
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        liftMotor.setPower(1.0);
-        liftMotor.setTargetPosition(0);
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Initializing spinner motor
         wristL = hardwareMap.get(Servo.class, "wristL"); // control
@@ -116,10 +113,16 @@ public class TankDriveIterative extends OpMode
         // Declaring power level of wheel motors
         double leftPower;
         double rightPower;
+        double spinnerPower = 0.0;
 
         // Reading joystick y-coordinate for power level
-        leftPower  = -gamepad1.left_stick_y * 0.5;
-        rightPower = -gamepad1.right_stick_y * 0.5;
+        if (runtime.seconds() < 120.0) {
+            leftPower = -gamepad1.left_stick_y * 0.5;
+            rightPower = -gamepad1.right_stick_y * 0.5;
+        } else {
+            leftPower = 0.0;
+            rightPower = 0.0;
+        }
 
         // Send power level to wheel motors
         if (gamepad1.left_bumper) {
@@ -164,10 +167,10 @@ public class TankDriveIterative extends OpMode
         }
 
         // Spin spinner motor
-        if (gamepad2.y) {
+        if ((gamepad2.y) && (runtime.seconds() < 120.0)) {
             spinnerMotor.setPower(0.2);
         } else {
-            spinnerMotor.setPower( 0.0);
+            spinnerMotor.setPower(0.0);
         }
 
         // Update status
