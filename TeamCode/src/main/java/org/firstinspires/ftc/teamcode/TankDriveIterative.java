@@ -125,28 +125,38 @@ public class TankDriveIterative extends OpMode
         }
 
         // Send power level to wheel motors
-        if (gamepad1.left_bumper) {
+        if ((gamepad1.left_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up)) {
             leftFront.setPower(-leftPower);
             leftBack.setPower(leftPower);
             rightFront.setPower(leftPower);
             rightBack.setPower(-leftPower);
-        } else if (gamepad1.right_bumper) {
+        } else if ((gamepad1.right_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up)) {
             leftFront.setPower(rightPower);
             leftBack.setPower(-rightPower);
             rightFront.setPower(-rightPower);
             rightBack.setPower(rightPower);
-        } else {
+        } else if ((!gamepad1.dpad_down) && (!gamepad1.dpad_up)) {
             leftFront.setPower(leftPower);
             leftBack.setPower(leftPower);
             rightFront.setPower(rightPower);
             rightBack.setPower(rightPower);
+        } else if (gamepad1.dpad_up) {
+            leftFront.setPower(0.45);
+            leftBack.setPower(0.45);
+            rightFront.setPower(0.45);
+            rightBack.setPower(0.45);
+        } else if (gamepad1.dpad_down) {
+            leftFront.setPower(-0.45);
+            leftBack.setPower(-0.45);
+            rightFront.setPower(-0.45);
+            rightBack.setPower(-0.45);
         }
 
         // Up and down control for lift motor
         if (!liftMotor.isBusy()) {
             if (gamepad2.dpad_up) {
                 liftMotor.setPower(1.0);
-                liftMotor.setTargetPosition(4700);
+                liftMotor.setTargetPosition(4800);
                 liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
             else if (gamepad2.dpad_down) {

@@ -148,7 +148,7 @@ public class ForJefferson extends OpMode
         if (!liftMotor.isBusy()) {
             if (gamepad2.dpad_up) {
                 liftMotor.setPower(1.0);
-                liftMotor.setTargetPosition(4700);
+                liftMotor.setTargetPosition(4800);
                 liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
             else if (gamepad2.dpad_down) {
