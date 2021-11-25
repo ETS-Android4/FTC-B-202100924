@@ -60,10 +60,8 @@ public class TankDriveIterative extends OpMode
     // Declaring spinner motor
     private DcMotor spinnerMotor = null;
 
-    // Other variable
-    /* Have not test out
-    private Boolean halfSpeed = True;
-    */
+    // Other
+    private Boolean closed = false;
 
     @Override
     public void init() {

@@ -111,8 +111,8 @@ public class AutoInTest extends LinearOpMode {
 
         // 4th
         runtime.reset();
-        movement(-0.4, 0.4, 0.4, -0.4);
-        movement_wait(3, "Going to the wall");
+        movement(-0.41, 0.41, 0.41, -0.41);
+        movement_wait(2, "Going to the wall");
         movement(0.0, 0.0, 0.0, 0.0);
 
         // 5th
@@ -123,58 +123,22 @@ public class AutoInTest extends LinearOpMode {
 
 
         // 6th
-        robot.spinnerMotor.setPower(0.25);
+        robot.spinnerMotor.setPower(0.3);
         runtime.reset();
-        movement_wait(5, "Spinning");
+        movement_wait(4, "Spinning");
         robot.spinnerMotor.setPower(0.0);
 
         // 7th
         runtime.reset();
-        movement(0.3, 0.3, 0.3, 0.3);
+        movement(0.34, 0.34, 0.34, 0.34);
         movement_wait(1, "Going to park");
         movement(0.0, 0.0, 0.0, 0.0);
 
-
-        // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
-        /*
-        robot.leftFront.setPower(-FORWARD_SPEED);
-        robot.leftBack.setPower(-FORWARD_SPEED);
-        robot.rightFront.setPower(-FORWARD_SPEED);
-        robot.rightBack.setPower(-FORWARD_SPEED);
+        // 8th
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
-            telemetry.addData("Going back to spin", "%2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        robot.leftFront.setPower(0);
-        robot.leftBack.setPower(0);
-        robot.rightFront.setPower(0);
-        robot.rightBack.setPower(0);
-
-
-        robot.spinnerMotor.setPower(0.3);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.0)) {
-            telemetry.addData("Spinning", "%2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        robot.spinnerMotor.setPower(0);
-
-
-        robot.leftFront.setPower(FORWARD_SPEED);
-        robot.leftBack.setPower(FORWARD_SPEED);
-        robot.rightFront.setPower(FORWARD_SPEED);
-        robot.rightBack.setPower(FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 2.0)) {
-            telemetry.addData("Moving to park", "%2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        robot.leftFront.setPower(0);
-        robot.leftBack.setPower(0);
-        robot.rightFront.setPower(0);
-        robot.rightBack.setPower(0);
-        */
+        movement(0.2, -0.2, -0.2, 0.2);
+        movement_wait(1, "Going to park");
+        movement(0.0, 0.0, 0.0, 0.0);
 
 
         telemetry.addData("Path", "Complete");
