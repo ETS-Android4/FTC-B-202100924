@@ -29,17 +29,15 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp(name="uwu", group="Mecanum")
-public class TankDriveIterative extends OpMode
+@TeleOp(name="uwu no limit", group="Mecanum")
+public class TankDriveIterativeNoLimit extends OpMode
 {
     // Elapsed time
     private ElapsedTime runtime = new ElapsedTime();
@@ -113,50 +111,35 @@ public class TankDriveIterative extends OpMode
         double rightPower;
 
         // Reading joystick y-coordinate for power level
-        if (runtime.seconds() < 120.0) {
-            leftPower = -gamepad1.left_stick_y * 0.5;
-            rightPower = -gamepad1.right_stick_y * 0.5;
-        } else {
-            leftPower = 0.0;
-            rightPower = 0.0;
-        }
+        leftPower = -gamepad1.left_stick_y * 0.5;
+        rightPower = -gamepad1.right_stick_y * 0.5;
 
         // Send power level to wheel motors
-        if ((gamepad1.left_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+        if ((gamepad1.left_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up)) {
             leftFront.setPower(-leftPower);
             leftBack.setPower(leftPower);
             rightFront.setPower(leftPower);
             rightBack.setPower(-leftPower);
-        } else if ((gamepad1.right_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+        } else if ((gamepad1.right_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up)) {
             leftFront.setPower(rightPower);
             leftBack.setPower(-rightPower);
             rightFront.setPower(-rightPower);
             rightBack.setPower(rightPower);
-        } else if ((!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+        } else if ((!gamepad1.dpad_down) && (!gamepad1.dpad_up)) {
             leftFront.setPower(leftPower);
             leftBack.setPower(leftPower);
             rightFront.setPower(rightPower);
             rightBack.setPower(rightPower);
-        } else if ((gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+        } else if (gamepad1.dpad_up) {
             leftFront.setPower(0.45);
             leftBack.setPower(0.45);
             rightFront.setPower(0.45);
             rightBack.setPower(0.45);
-        } else if ((gamepad1.dpad_down) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+        } else if (gamepad1.dpad_down) {
             leftFront.setPower(-0.45);
             leftBack.setPower(-0.45);
             rightFront.setPower(-0.45);
             rightBack.setPower(-0.45);
-        } else if ((gamepad1.left_trigger > 0.25) && (gamepad1.right_trigger < 0.25)) {
-            leftFront.setPower(-0.40);
-            leftBack.setPower(0.40);
-            rightFront.setPower(0.40);
-            rightBack.setPower(-0.40);
-        } else if ((gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger > 0.25)) {
-            leftFront.setPower(0.40);
-            leftBack.setPower(-0.40);
-            rightFront.setPower(-0.40);
-            rightBack.setPower(0.40);
         }
 
         // Up and down control for lift motor
@@ -184,10 +167,8 @@ public class TankDriveIterative extends OpMode
         }
 
         // Spin spinner motor
-        if ((gamepad2.y) && (runtime.seconds() < 120.0)) {
+        if (gamepad2.y) {
             spinnerMotor.setPower(0.2);
-        } else {
-            spinnerMotor.setPower(0.0);
         }
 
         // Update status

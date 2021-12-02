@@ -29,7 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -37,8 +36,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp(name="uwu test", group="Mecanum")
-public class TeleOpTest extends OpMode
+@TeleOp(name="uwu for jeff no limit", group="Mecanum")
+public class ForJeffersonNoLimit extends OpMode
 {
     // Elapsed time
     private ElapsedTime runtime = new ElapsedTime();
@@ -59,32 +58,21 @@ public class TeleOpTest extends OpMode
     // Declaring spinner motor
     private DcMotor spinnerMotor = null;
 
-    // Other variables
-    private double rightPower = 0.0;
-    private double leftPower = 0.0;
-    private double spinnerPower = 0.0;
-    private double powerMultiplier = 0.75;
-
-    //private final int initializingID = hardwareMap.appContext.getResources().getIdentifier("initializing", "raw", hardwareMap.appContext.getPackageName());
-    //private final int onehalfID = hardwareMap.appContext.getResources().getIdentifier("onehalf", "raw", hardwareMap.appContext.getPackageName());
-    //private final int oneID = hardwareMap.appContext.getResources().getIdentifier("one", "raw", hardwareMap.appContext.getPackageName());
-    //private final int halfID = hardwareMap.appContext.getResources().getIdentifier("half", "raw", hardwareMap.appContext.getPackageName());
-    //private final int zeroID = hardwareMap.appContext.getResources().getIdentifier("zero", "raw", hardwareMap.appContext.getPackageName());
-    //private int soundPhase = 0;
-    //private double timePhase = 30.0;
-
+    // Other variable
+    /* Have not test out
+    private Boolean halfSpeed = True;
+    */
 
     @Override
     public void init() {
         // Initializing message
         telemetry.addData("Status", "Initializing");
-        //SoundPlayer.getInstance().startPlaying(hardwareMap.appContext, initializingID);
 
         // Initializing wheel motors variable
-        leftFront  = hardwareMap.get(DcMotor.class, "left_front");
-        leftBack = hardwareMap.get(DcMotor.class, "left_back");
-        rightFront = hardwareMap.get(DcMotor.class, "right_front");
-        rightBack = hardwareMap.get(DcMotor.class, "right_back");
+        leftFront  = hardwareMap.get(DcMotor.class, "left_front"); // control
+        leftBack = hardwareMap.get(DcMotor.class, "left_back"); // extension
+        rightFront = hardwareMap.get(DcMotor.class, "right_front"); // control
+        rightBack = hardwareMap.get(DcMotor.class, "right_back"); // extension
 
         // Configuring directions of the motors
         leftFront.setDirection(DcMotor.Direction.FORWARD);
@@ -93,7 +81,7 @@ public class TeleOpTest extends OpMode
         rightBack.setDirection(DcMotor.Direction.REVERSE);
 
         // Initializing lift motor and configuring brake behavior
-        liftMotor = hardwareMap.get(DcMotor.class, "lift_motor");
+        liftMotor = hardwareMap.get(DcMotor.class, "lift_motor"); // extension
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftMotor.setPower(1.0);
@@ -101,11 +89,12 @@ public class TeleOpTest extends OpMode
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Initializing spinner motor
-        wristL = hardwareMap.get(Servo.class, "wristL");
-        wristR = hardwareMap.get(Servo.class, "wristR");
+        wristL = hardwareMap.get(Servo.class, "wristL"); // control
+        wristR = hardwareMap.get(Servo.class, "wristR"); // control
+        wristL.setDirection(Servo.Direction.REVERSE);
 
         // Initializing spinner motor and configuring direction
-        spinnerMotor = hardwareMap.get(DcMotor.class, "spinner_motor");
+        spinnerMotor = hardwareMap.get(DcMotor.class, "spinner_motor"); // extension
         spinnerMotor.setDirection(DcMotor.Direction.REVERSE);
 
         // Ready message
@@ -116,52 +105,19 @@ public class TeleOpTest extends OpMode
     @Override
     public void init_loop() {
 
-        // Logics for power multiplier
-        if (gamepad1.dpad_down) {
-            powerMultiplier = 0.5;
-        } else if (gamepad1.dpad_up) {
-            powerMultiplier = 0.75;
-        }
-
-        // Logics for power
-        if (runtime.seconds() < 120.0) {
-            rightPower = -gamepad1.right_stick_y * powerMultiplier;
-            leftPower = -gamepad1.left_stick_y * powerMultiplier;
-            spinnerPower = 0.2;
-        }
-        else {
-            rightPower = 0.0;
-            leftPower = 0.0;
-            spinnerPower = 0.0;
-        }
-
-        /*
-        // Logics for time remainder
-        if (runtime.seconds() > timePhase) {
-            if (soundPhase == 0) {
-                timePhase += 30.0;
-                soundPhase += 1;
-                SoundPlayer.getInstance().startPlaying(hardwareMap.appContext, onehalfID);
-            } else if (soundPhase == 1) {
-                timePhase += 30.0;
-                soundPhase += 1;
-                SoundPlayer.getInstance().startPlaying(hardwareMap.appContext, oneID);
-            } else if (soundPhase == 2) {
-                timePhase += 30.0;
-                soundPhase += 1;
-                SoundPlayer.getInstance().startPlaying(hardwareMap.appContext, halfID);
-            } else if (soundPhase == 3) {
-                timePhase += 30.0;
-                soundPhase += 1;
-                SoundPlayer.getInstance().startPlaying(hardwareMap.appContext, zeroID);
-            }
-        }*/
-
     }
 
 
     @Override
     public void loop() {
+
+        // Declaring power level of wheel motors
+        double leftPower;
+        double rightPower;
+
+        // Reading joystick y-coordinate for power level
+        leftPower = -gamepad1.left_stick_y * 0.75;
+        rightPower = -gamepad1.right_stick_y * 0.75;
 
         // Send power level to wheel motors
         if (gamepad1.left_bumper) {
@@ -185,7 +141,7 @@ public class TeleOpTest extends OpMode
         if (!liftMotor.isBusy()) {
             if (gamepad2.dpad_up) {
                 liftMotor.setPower(1.0);
-                liftMotor.setTargetPosition(5450);
+                liftMotor.setTargetPosition(4800);
                 liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
             else if (gamepad2.dpad_down) {
@@ -197,34 +153,24 @@ public class TeleOpTest extends OpMode
 
         // Open and close wrist (servo)
         if (gamepad2.a) {
-            wristL.setPosition(0.0);
-            wristR.setPosition(0.5);
+            wristL.setPosition(1.0);
+            wristR.setPosition(0.9);
         }
         else if (gamepad2.b) {
-            wristL.setPosition(0.5);
-            wristR.setPosition(0.0);
+            wristL.setPosition(-1.0);
+            wristR.setPosition(-1.0);
         }
 
         // Spin spinner motor
         if (gamepad2.y) {
-            spinnerMotor.setPower(spinnerPower);
-        } else if (gamepad2.x) {
-            spinnerMotor.setPower(-spinnerPower * 0.25);
-        } else {
-            spinnerMotor.setPower(0.0);
+            spinnerMotor.setPower(0.2);
         }
 
         // Update status
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors' Status", "Left: (%.2f), Right: (%.2f)", leftPower, rightPower);
-        telemetry.addData("Spinner Status", "Power Value: " + spinnerPower);
+        telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", ((leftPower * 100) + '%'), ((rightPower * 100) + '%'));
 
-        if (liftMotor.isBusy()) {
-            telemetry.addData("Lift Status", "Status: Busy, Pos. Value: " + liftMotor.getCurrentPosition());
-        } else {
-            telemetry.addData("Lift Status", "Status: Idle, Pos. Value: " + liftMotor.getCurrentPosition());
-        }
-
+        telemetry.addData("Lift's Position", "Pos. Value: " + liftMotor.getCurrentPosition());
     }
 
 
