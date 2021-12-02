@@ -60,9 +60,6 @@ public class TankDriveIterative extends OpMode
     // Declaring spinner motor
     private DcMotor spinnerMotor = null;
 
-    // Other
-    private Boolean closed = false;
-
     @Override
     public void init() {
         // Initializing message
@@ -94,14 +91,23 @@ public class TankDriveIterative extends OpMode
         spinnerMotor = hardwareMap.get(DcMotor.class, "spinner_motor"); // extension
         spinnerMotor.setDirection(DcMotor.Direction.REVERSE);
 
+
         // Ready message
         telemetry.addData("Status", "Initialized");
     }
 
 
-    @Override
-    public void init_loop() {
+    private void movement(double frontL, double backL, double frontR, double backR) {
+        leftFront.setPower(frontL);
+        leftBack.setPower(backL);
+        rightFront.setPower(frontR);
+        rightBack.setPower(backR);
+    }
 
+    private void move_lift(int target) {
+        liftMotor.setPower(1.0);
+        liftMotor.setTargetPosition(target);
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
 
@@ -109,76 +115,50 @@ public class TankDriveIterative extends OpMode
     public void loop() {
 
         // Declaring power level of wheel motors
-        double leftPower;
-        double rightPower;
+        double leftPower = -gamepad1.left_stick_y * 0.5;
+        double rightPower = -gamepad1.right_stick_y * 0.5;
 
-        // Reading joystick y-coordinate for power level
         if (runtime.seconds() < 120.0) {
-            leftPower = -gamepad1.left_stick_y * 0.5;
-            rightPower = -gamepad1.right_stick_y * 0.5;
-        } else {
-            leftPower = 0.0;
-            rightPower = 0.0;
-        }
-
-        // Send power level to wheel motors
-        if ((gamepad1.left_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
-            leftFront.setPower(-leftPower);
-            leftBack.setPower(leftPower);
-            rightFront.setPower(leftPower);
-            rightBack.setPower(-leftPower);
-        } else if ((gamepad1.right_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
-            leftFront.setPower(rightPower);
-            leftBack.setPower(-rightPower);
-            rightFront.setPower(-rightPower);
-            rightBack.setPower(rightPower);
-        } else if ((!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
-            leftFront.setPower(leftPower);
-            leftBack.setPower(leftPower);
-            rightFront.setPower(rightPower);
-            rightBack.setPower(rightPower);
-        } else if ((gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
-            leftFront.setPower(0.45);
-            leftBack.setPower(0.45);
-            rightFront.setPower(0.45);
-            rightBack.setPower(0.45);
-        } else if ((gamepad1.dpad_down) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
-            leftFront.setPower(-0.45);
-            leftBack.setPower(-0.45);
-            rightFront.setPower(-0.45);
-            rightBack.setPower(-0.45);
-        } else if ((gamepad1.left_trigger > 0.25) && (gamepad1.right_trigger < 0.25)) {
-            leftFront.setPower(-0.40);
-            leftBack.setPower(0.40);
-            rightFront.setPower(0.40);
-            rightBack.setPower(-0.40);
-        } else if ((gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger > 0.25)) {
-            leftFront.setPower(0.40);
-            leftBack.setPower(-0.40);
-            rightFront.setPower(-0.40);
-            rightBack.setPower(0.40);
+            // Send power level to wheel motors
+            if ((gamepad1.left_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+                movement(-leftPower, leftPower, leftPower, -leftPower);
+            }
+            else if ((gamepad1.right_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+                movement(rightPower, -rightPower, -rightPower, rightPower);
+            }
+            else if ((!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+                movement(leftPower, leftPower, rightPower, rightPower);
+            }
+            else if ((gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+                movement(0.45, 0.45, 0.45, 0.45);
+            }
+            else if ((gamepad1.dpad_down) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+                movement(-0.45, -0.45, -0.45, -0.45);
+            }
+            else if ((gamepad1.left_trigger > 0.25) && (gamepad1.right_trigger < 0.25)) {
+                movement(-0.40, 0.40, 0.40, -0.40);
+            }
+            else if ((gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger > 0.25)) {
+                movement(0.40, -0.40, -0.40, 0.40);
+            }
         }
 
         // Up and down control for lift motor
-        if (!liftMotor.isBusy()) {
+        if ((!liftMotor.isBusy()) && (runtime.seconds() < 120.0)) {
             if (gamepad2.dpad_up) {
-                liftMotor.setPower(1.0);
-                liftMotor.setTargetPosition(4800);
-                liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                move_lift(4800);
             }
             else if (gamepad2.dpad_down) {
-                liftMotor.setPower(1.0);
-                liftMotor.setTargetPosition(0);
-                liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                move_lift(0);
             }
         }
 
         // Open and close wrist (servo)
-        if (gamepad2.a) {
+        if ((gamepad2.a) && (runtime.seconds() < 120.0)) {
             wristL.setPosition(1.0);
             wristR.setPosition(0.9);
         }
-        else if (gamepad2.b) {
+        else if ((gamepad2.b) && (runtime.seconds() < 120.0)) {
             wristL.setPosition(-1.0);
             wristR.setPosition(-1.0);
         }
@@ -186,14 +166,14 @@ public class TankDriveIterative extends OpMode
         // Spin spinner motor
         if ((gamepad2.y) && (runtime.seconds() < 120.0)) {
             spinnerMotor.setPower(0.2);
-        } else {
+        }
+        else {
             spinnerMotor.setPower(0.0);
         }
 
         // Update status
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", ((leftPower * 100) + '%'), ((rightPower * 100) + '%'));
-
         telemetry.addData("Lift's Position", "Pos. Value: " + liftMotor.getCurrentPosition());
     }
 
