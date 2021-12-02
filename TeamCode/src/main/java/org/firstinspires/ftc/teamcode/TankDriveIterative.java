@@ -119,56 +119,49 @@ public class TankDriveIterative extends OpMode
         double rightPower = -gamepad1.right_stick_y * 0.5;
 
         if (runtime.seconds() < 120.0) {
+
             // Send power level to wheel motors
             if ((gamepad1.left_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
                 movement(-leftPower, leftPower, leftPower, -leftPower);
-            }
-            else if ((gamepad1.right_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+            } else if ((gamepad1.right_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
                 movement(rightPower, -rightPower, -rightPower, rightPower);
-            }
-            else if ((!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+            } else if ((!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
                 movement(leftPower, leftPower, rightPower, rightPower);
-            }
-            else if ((gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+            } else if ((gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
                 movement(0.45, 0.45, 0.45, 0.45);
-            }
-            else if ((gamepad1.dpad_down) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+            } else if ((gamepad1.dpad_down) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
                 movement(-0.45, -0.45, -0.45, -0.45);
-            }
-            else if ((gamepad1.left_trigger > 0.25) && (gamepad1.right_trigger < 0.25)) {
+            } else if ((gamepad1.left_trigger > 0.25) && (gamepad1.right_trigger < 0.25)) {
                 movement(-0.40, 0.40, 0.40, -0.40);
-            }
-            else if ((gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger > 0.25)) {
+            } else if ((gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger > 0.25)) {
                 movement(0.40, -0.40, -0.40, 0.40);
             }
-        }
 
-        // Up and down control for lift motor
-        if ((!liftMotor.isBusy()) && (runtime.seconds() < 120.0)) {
-            if (gamepad2.dpad_up) {
-                move_lift(4800);
+            // Up and down control for lift motor
+            if (!liftMotor.isBusy()) {
+                if (gamepad2.dpad_up) {
+                    move_lift(4800);
+                } else if (gamepad2.dpad_down) {
+                    move_lift(0);
+                }
             }
-            else if (gamepad2.dpad_down) {
-                move_lift(0);
+
+            // Open and close wrist (servo)
+            if (gamepad2.a) {
+                wristL.setPosition(1.0);
+                wristR.setPosition(0.9);
+            } else if (gamepad2.b) {
+                wristL.setPosition(-1.0);
+                wristR.setPosition(-1.0);
             }
-        }
 
-        // Open and close wrist (servo)
-        if ((gamepad2.a) && (runtime.seconds() < 120.0)) {
-            wristL.setPosition(1.0);
-            wristR.setPosition(0.9);
-        }
-        else if ((gamepad2.b) && (runtime.seconds() < 120.0)) {
-            wristL.setPosition(-1.0);
-            wristR.setPosition(-1.0);
-        }
+            // Spin spinner motor
+            if (gamepad2.y) {
+                spinnerMotor.setPower(0.2);
+            } else {
+                spinnerMotor.setPower(0.0);
+            }
 
-        // Spin spinner motor
-        if ((gamepad2.y) && (runtime.seconds() < 120.0)) {
-            spinnerMotor.setPower(0.2);
-        }
-        else {
-            spinnerMotor.setPower(0.0);
         }
 
         // Update status
@@ -176,7 +169,6 @@ public class TankDriveIterative extends OpMode
         telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", ((leftPower * 100) + '%'), ((rightPower * 100) + '%'));
         telemetry.addData("Lift's Position", "Pos. Value: " + liftMotor.getCurrentPosition());
     }
-
 
     @Override
     public void stop() {
