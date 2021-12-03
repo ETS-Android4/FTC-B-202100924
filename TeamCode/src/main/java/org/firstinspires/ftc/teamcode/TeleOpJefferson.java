@@ -38,8 +38,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp(name="uwu for jeff", group="Mecanum")
-public class ForJefferson extends OpMode
+@TeleOp(name="uwu teleop for jeff", group="TeleOp Jefferson")
+public class TeleOpJefferson extends OpMode
 {
     // Elapsed time
     private ElapsedTime runtime = new ElapsedTime();

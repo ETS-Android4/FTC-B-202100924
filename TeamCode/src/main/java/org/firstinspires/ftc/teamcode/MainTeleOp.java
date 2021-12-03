@@ -29,47 +29,40 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp(name="uwu", group="Mecanum")
-public class TankDriveIterative extends OpMode
+@TeleOp(group="TeleOp")
+public class MainTeleOp extends OpMode
 {
     // Elapsed time
     private ElapsedTime runtime = new ElapsedTime();
 
-    // Declaring wheel motors
+    // Declaring motors
     private DcMotor leftFront = null;
     private DcMotor leftBack = null;
     private DcMotor rightFront = null;
     private DcMotor rightBack = null;
-
-    // Declaring lift motor
     private DcMotor liftMotor = null;
+    private DcMotor spinnerMotor = null;
 
-    // Declaring servo
+    // Declaring servos
     private Servo wristL = null;
     private Servo wristR = null;
 
-    // Declaring spinner motor
-    private DcMotor spinnerMotor = null;
 
     @Override
     public void init() {
-        // Initializing message
-        telemetry.addData("Status", "Initializing");
 
         // Initializing wheel motors variable
-        leftFront  = hardwareMap.get(DcMotor.class, "left_front"); // control
-        leftBack = hardwareMap.get(DcMotor.class, "left_back"); // extension
-        rightFront = hardwareMap.get(DcMotor.class, "right_front"); // control
-        rightBack = hardwareMap.get(DcMotor.class, "right_back"); // extension
+        leftFront  = hardwareMap.get(DcMotor.class, "left_front");
+        leftBack = hardwareMap.get(DcMotor.class, "left_back");
+        rightFront = hardwareMap.get(DcMotor.class, "right_front");
+        rightBack = hardwareMap.get(DcMotor.class, "right_back");
 
         // Configuring directions of the motors
         leftFront.setDirection(DcMotor.Direction.FORWARD);
@@ -78,22 +71,19 @@ public class TankDriveIterative extends OpMode
         rightBack.setDirection(DcMotor.Direction.REVERSE);
 
         // Initializing lift motor and configuring brake behavior
-        liftMotor = hardwareMap.get(DcMotor.class, "lift_motor"); // extension
+        liftMotor = hardwareMap.get(DcMotor.class, "lift_motor");
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Initializing spinner motor
-        wristL = hardwareMap.get(Servo.class, "wristL"); // control
-        wristR = hardwareMap.get(Servo.class, "wristR"); // control
+        wristL = hardwareMap.get(Servo.class, "wristL");
+        wristR = hardwareMap.get(Servo.class, "wristR");
         wristL.setDirection(Servo.Direction.REVERSE);
 
         // Initializing spinner motor and configuring direction
-        spinnerMotor = hardwareMap.get(DcMotor.class, "spinner_motor"); // extension
+        spinnerMotor = hardwareMap.get(DcMotor.class, "spinner_motor");
         spinnerMotor.setDirection(DcMotor.Direction.REVERSE);
 
-
-        // Ready message
-        telemetry.addData("Status", "Initialized");
     }
 
 
@@ -121,6 +111,19 @@ public class TankDriveIterative extends OpMode
         if (runtime.seconds() < 120.0) {
 
             // Send power level to wheel motors
+            /*if ((gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
+                if ((!gamepad1.dpad_down) && (!gamepad1.dpad_up)) {
+
+                }
+                 }
+            } else {
+                if ((gamepad1.left_trigger > 0.25) && (gamepad1.right_trigger < 0.25)) {
+                    movement(-0.75, 0.75, 0.75, -0.75);
+                } else if ((gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger > 0.25)) {
+                    movement(0.75, -0.75, -0.75, 0.75);
+            }*/
+
+
             if ((gamepad1.left_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
                 movement(-leftPower, leftPower, leftPower, -leftPower);
             } else if ((gamepad1.right_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
@@ -128,13 +131,13 @@ public class TankDriveIterative extends OpMode
             } else if ((!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
                 movement(leftPower, leftPower, rightPower, rightPower);
             } else if ((gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
-                movement(0.45, 0.45, 0.45, 0.45);
+                movement(0.50, 0.50, 0.50, 0.50);
             } else if ((gamepad1.dpad_down) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
-                movement(-0.45, -0.45, -0.45, -0.45);
+                movement(-0.50, -0.50, -0.50, -0.50);
             } else if ((gamepad1.left_trigger > 0.25) && (gamepad1.right_trigger < 0.25)) {
-                movement(-0.40, 0.40, 0.40, -0.40);
+                movement(-0.75, 0.75, 0.75, -0.75);
             } else if ((gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger > 0.25)) {
-                movement(0.40, -0.40, -0.40, 0.40);
+                movement(0.75, -0.75, -0.75, 0.75);
             }
 
             // Up and down control for lift motor
@@ -162,12 +165,12 @@ public class TankDriveIterative extends OpMode
                 spinnerMotor.setPower(0.0);
             }
 
+            // Update status
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", ((leftPower * 100) + '%'), ((rightPower * 100) + '%'));
+            telemetry.addData("Lift's Position", "Pos. Value: " + liftMotor.getCurrentPosition());
         }
 
-        // Update status
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", ((leftPower * 100) + '%'), ((rightPower * 100) + '%'));
-        telemetry.addData("Lift's Position", "Pos. Value: " + liftMotor.getCurrentPosition());
     }
 
     @Override
