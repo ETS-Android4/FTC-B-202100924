@@ -37,7 +37,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 @TeleOp(group="TeleOp")
-public class MainTeleOp extends OpMode
+public class TeleOp4Jeff extends OpMode
 {
     // Elapsed time
     private ElapsedTime runtime = new ElapsedTime();
@@ -105,8 +105,8 @@ public class MainTeleOp extends OpMode
     public void loop() {
 
         // Declaring power level of wheel motors
-        double leftPower = -gamepad1.left_stick_y * 0.5;
-        double rightPower = -gamepad1.right_stick_y * 0.5;
+        double leftPower = -gamepad1.left_stick_y * 0.75;
+        double rightPower = -gamepad1.right_stick_y * 0.75;
 
         if (runtime.seconds() < 120.0) {
 
@@ -161,7 +161,6 @@ public class MainTeleOp extends OpMode
         if (!gamepad2.y) {
             spinnerMotor.setPower(0.0);
         }
-
     }
 
     @Override

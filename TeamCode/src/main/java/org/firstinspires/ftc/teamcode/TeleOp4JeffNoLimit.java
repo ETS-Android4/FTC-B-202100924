@@ -37,7 +37,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 @TeleOp(group="TeleOp")
-public class MainTeleOp extends OpMode
+public class TeleOp4JeffNoLimit extends OpMode
 {
     // Elapsed time
     private ElapsedTime runtime = new ElapsedTime();
@@ -105,10 +105,10 @@ public class MainTeleOp extends OpMode
     public void loop() {
 
         // Declaring power level of wheel motors
-        double leftPower = -gamepad1.left_stick_y * 0.5;
-        double rightPower = -gamepad1.right_stick_y * 0.5;
+        double leftPower = -gamepad1.left_stick_y * 0.75;
+        double rightPower = -gamepad1.right_stick_y * 0.75;
 
-        if (runtime.seconds() < 120.0) {
+        if (runtime.seconds() > 0.0) {
 
             // Send power level to wheel motors
             if ((gamepad1.left_bumper) && (!gamepad1.dpad_down) && (!gamepad1.dpad_up) && (gamepad1.left_trigger < 0.25) && (gamepad1.right_trigger < 0.25)) {
@@ -156,10 +156,6 @@ public class MainTeleOp extends OpMode
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", ((leftPower * 100) + '%'), ((rightPower * 100) + '%'));
             telemetry.addData("Lift's Position", "Pos. Value: " + liftMotor.getCurrentPosition());
-        }
-
-        if (!gamepad2.y) {
-            spinnerMotor.setPower(0.0);
         }
 
     }
