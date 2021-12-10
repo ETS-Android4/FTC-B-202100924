@@ -156,9 +156,8 @@ public class MainTeleOp extends OpMode
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", ((leftPower * 100) + '%'), ((rightPower * 100) + '%'));
             telemetry.addData("Lift's Position", "Pos. Value: " + liftMotor.getCurrentPosition());
-        }
-
-        if (!gamepad2.y) {
+        } else {
+            movement(0.0, 0.0, 0.0, 0.0);
             spinnerMotor.setPower(0.0);
         }
 

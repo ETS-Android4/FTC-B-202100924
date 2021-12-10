@@ -85,6 +85,7 @@ public class Hardwares
 
         // Set runmode
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Set all motors to zero power
         leftFront.setPower(0);

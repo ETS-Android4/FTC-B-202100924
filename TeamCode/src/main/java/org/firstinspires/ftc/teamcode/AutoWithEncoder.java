@@ -35,30 +35,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@Autonomous(name="uwu auto", group="Auto")
-public class Auto extends LinearOpMode {
+@Autonomous(name="uwu auto with encoder", group="Auto")
+public class AutoWithEncoder extends LinearOpMode {
 
     /* Declare OpMode members. */
     Hardwares robot   = new Hardwares();
     private ElapsedTime runtime = new ElapsedTime();
 
 
-    private void movement(double frontL, double backL, double frontR, double backR) {
+    private void movement(double frontL, double frontR, double backR) {
         robot.leftFront.setPower(frontL);
-        robot.leftBack.setPower(backL);
         robot.rightFront.setPower(frontR);
         robot.rightBack.setPower(backR);
     }
 
     private void movement_wait(int time, String name) {
         while (opModeIsActive() && (runtime.seconds() < time)) {
-            telemetry.addData(name, "%2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-    }
-
-    private void movement_wait_mill(int time, String name) {
-        while (opModeIsActive() && (runtime.milliseconds() < time)) {
             telemetry.addData(name, "%2.5f S Elapsed", runtime.seconds());
             telemetry.update();
         }
@@ -100,58 +92,52 @@ public class Auto extends LinearOpMode {
 
 
         // 2nd
-        movement(0.4, 0.4, 0.4, 0.4);
+        movement(0.4, 0.4, 0.4);
         runtime.reset();
-        movement_wait_mill(1200, "Going to deposit");
-        movement(0.0, 0.0, 0.0, 0.0);
-        sleep(750);
+        movement_wait(1, "Going to deposit");
+        movement(0.0, 0.0, 0.0);
+        sleep(100);
         robot.wristL.setPosition(1.0);
         robot.wristR.setPosition(0.9);
-        sleep(500);
 
 
         // 3rd
         runtime.reset();
-        movement(-0.47, 0.36, 0.47, -0.41);
-        movement_wait(4, "Going to the wall");
-        movement(0.0, 0.0, 0.0, 0.0);
+        movement(-0.4, 0.4, -0.4);
+        movement_wait(2, "Going to the wall");
+        movement(0.0, 0.0, 0.0);
+
+
+        // 4th
+        runtime.reset();
+        movement(-0.41, 0.41, -0.41);
+        movement_wait(2, "Going to the wall");
+        movement(0.0, 0.0, 0.0);
 
         // 5th
         runtime.reset();
-        movement(-0.25, -0.25, -0.25, -0.25);
-        movement_wait_mill(2000, "Going to spin");
-        movement(0.0, 0.0, 0.0, 0.0);
+        movement(-0.25, -0.25, -0.25);
+        movement_wait(2, "Going to spin");
+        movement(0.0, 0.0, 0.0);
 
 
         // 6th
-        robot.spinnerMotor.setPower(0.2);
+        robot.spinnerMotor.setPower(0.3);
         runtime.reset();
-        movement_wait(6, "Spinning");
+        movement_wait(4, "Spinning");
         robot.spinnerMotor.setPower(0.0);
 
         // 7th
         runtime.reset();
-        movement(0.34, 0.34, 0.34, 0.34);
-        movement_wait_mill(1500, "Going to park");
-        movement(0.0, 0.0, 0.0, 0.0);
+        movement(0.34, 0.34, 0.34);
+        movement_wait(1, "Going to park");
+        movement(0.0, 0.0, 0.0);
 
         // 8th
         runtime.reset();
-        movement(0.2, -0.2, -0.2, 0.2);
+        movement(0.2, -0.2, 0.2);
         movement_wait(1, "Going to park");
-        movement(0.0, 0.0, 0.0, 0.0);
-
-        //9th
-        runtime.reset();
-        robot.liftMotor.setPower(1.0);
-        robot.liftMotor.setTargetPosition(0);
-        robot.liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (opModeIsActive() && robot.liftMotor.isBusy()) {
-            telemetry.addData("Lifting", "%2.5f S Elapsed", runtime.seconds());
-            telemetry.addData("Lift", "Pos. Value: " + robot.liftMotor.getCurrentPosition());
-            telemetry.update();
-        }
-        robot.liftMotor.setPower(0.0);
+        movement(0.0, 0.0, 0.0);
 
 
         telemetry.addData("Path", "Complete");
