@@ -157,6 +157,10 @@ public class TeleOp4Jeff extends OpMode
             telemetry.addData("Motors' Power Level", "Left: (%.2f), Right: (%.2f)", ((leftPower * 100) + '%'), ((rightPower * 100) + '%'));
             telemetry.addData("Lift's Position", "Pos. Value: " + liftMotor.getCurrentPosition());
         }
+        else if (runtime.seconds() > 120.0) {
+            movement(0.0, 0.0, 0.0, 0.0);
+            liftMotor.setPower(0.0);
+        }
 
         if (!gamepad2.y) {
             spinnerMotor.setPower(0.0);

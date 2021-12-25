@@ -35,7 +35,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@Autonomous(name="uwu auto", group="Auto")
+@Autonomous(name="Auto UWU", group="Auto")
 public class Auto extends LinearOpMode {
 
     /* Declare OpMode members. */
