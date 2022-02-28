@@ -82,7 +82,7 @@ public class Auto extends LinearOpMode {
         // 1st
         runtime.reset();
         robot.liftMotor.setPower(1.0);
-        robot.liftMotor.setTargetPosition(4800);
+        robot.liftMotor.setTargetPosition(1700);
         robot.liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         while (opModeIsActive() && robot.liftMotor.isBusy()) {
             telemetry.addData("Lifting", "%2.5f S Elapsed", runtime.seconds());
