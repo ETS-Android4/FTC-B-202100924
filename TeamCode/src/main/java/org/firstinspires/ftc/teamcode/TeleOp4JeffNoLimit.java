@@ -130,7 +130,7 @@ public class TeleOp4JeffNoLimit extends OpMode
             // Up and down control for lift motor
             if (!liftMotor.isBusy()) {
                 if (gamepad2.dpad_up) {
-                    move_lift(4800);
+                    move_lift(1700);
                 } else if (gamepad2.dpad_down) {
                     move_lift(0);
                 }
